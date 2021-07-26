@@ -7,5 +7,5 @@ Run the app from Spotlight to quickly change displays and toggle KVM.
 
 ## Windows
 Download ControlMyMonitor from [here](https://www.nirsoft.net/utils/controlmymonitor.zip).
-Install. In `to_mac.py`', make sure `CONTROLMYMONITOR_UTIL` path is correctly pointing to `ControlMyMonitor.exe`.
+Install. In `to_mac.py`, make sure `CONTROLMYMONITOR_UTIL` path is correctly pointing to `ControlMyMonitor.exe`.
 Create a shortcut to `to_mac.py`, name it `to_mac` and put it somewhere in the path. Run from Win-R->to_mac.
