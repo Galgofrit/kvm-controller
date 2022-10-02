@@ -7,8 +7,10 @@ import serial
 import serial.tools.list_ports
 import os
 
+M1_MODE = True
 HOMEBREW_PREFIX = os.environ.get('HOMEBREW_PREFIX')
 DDCCTL_UTIL = 'bin/ddcctl'
+M1DDC_UTIL = '/usr/local/bin/m1ddc'
 MONITOR_ID = 1 # Assume Samsung G7 is first external display connected
 MONITOR_DISPLAYPORT_ID = 9
 
@@ -30,18 +32,27 @@ def trigger_kvm_switch():
     arduino.write(1)
     arduino.close()
 
-def switch_monitor():
-    import ipdb; ipdb.set_trace()
+def switch_monitor_m1():
+    if not os.path.exists(M1DDC_UTIL):
+        print('m1ddc util not installed. Please run install-mac.sh...')
+    subprocess.call([M1DDC_UTIL, 'set', 'input', str(MONITOR_DISPLAYPORT_ID)])
+
+def switch_monitor_legacy():
     if not HOMEBREW_PREFIX:
         print('Homebrew prefix not found.')
         return False
 
     ddcctl_fullpath = os.path.join(HOMEBREW_PREFIX, DDCCTL_UTIL)
-    subprocess.call([ddcctl_fullpath, '-d', str(MONITOR_ID), '-i', str(MONITOR_DISPLAYPORT_ID)]) # Assume 
+    subprocess.call([ddcctl_fullpath, '-d', str(MONITOR_ID), '-i', str(MONITOR_DISPLAYPORT_ID)])
 
 def main():
-    if not switch_monitor():
-        print('Could not switch monitor.')
+    if M1_MODE:
+        if not switch_monitor_m1():
+            print('Could not switch monitor.')
+    else: # Intel
+        if not switch_monitor_legacy():
+            print('Could not switch monitor.')
+
     if not trigger_kvm_switch():
         print('Could not trigger KVM switch.')
 

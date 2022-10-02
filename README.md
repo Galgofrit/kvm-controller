@@ -1,5 +1,6 @@
 
 # Installation Instructions
+As of October 2022, supports Apple Silicon.
 ## macOS
 Just run `./install_mac.sh`.
 You can create an app that wraps the Python script using Automator - (File->New->Application->Run Shell Script->enter bash code that runs the Python script).
